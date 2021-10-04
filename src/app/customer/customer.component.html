@@ -1,0 +1,201 @@
+<form #UserForm="ngForm">
+    <!-- {{UserForm.value | json}} -->
+  <div class="container-fluid" style="background-color: #4672c4;">
+    <div class="container" style="background-color: #edeef1;">
+      <div class="row">
+        <div class="col-sm-5 col-md-4">
+          <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Saved Entry will be here</legend>
+            <div class="control-group">
+              <!-- <label class="control-label input-label" for="startTime">Jhon</label> -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">SL.No</th>
+                    <th scope="col">Customer Name</th>
+                    <!-- <th scope="col">Image</th> -->
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let customers of customerList; let i = index">
+                    <td>{{i+1}}</td>
+                    <td scope="row">
+                      <!-- <input type="text" name="adressInfos{{i}}" [(ngModel)]="aAdress.Customer_Address" class="form-control form-control-sm"
+                        id="colFormLabelSm" placeholder="Enter Text Here"> -->
+                        {{customers.customerName}}
+                    </td>
+                    <!-- <td scope="row"> <img [src]="createImgPath(customers.Image)" alt="" style="width: 100px;height: 95px;"> </td> -->
+                    <td>
+                      <button type="button" class="btn btn-primary" (click)="editOn(customers ,i)">Edit</button>
+                       <!-- <button class="btn btn-danger" (click)="deleteKeys(aAdress ,i)">Delete</button>  -->
+                     
+                    </td>
+                    <!-- <td>
+                      <button type="button" class="btn btn-secondary" style="padding: 0rem .0rem;">Edit</button>
+                      <button type="button" class="btn btn-danger" style="padding: 0rem .0rem;">Delete</button>
+                    </td> -->
+                  </tr>
+        
+                </tbody>
+              </table>
+  
+  
+  
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-sm-5 offset-sm-2 col-md-8 offset-md-0">
+          <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Actions</legend>
+            <div class="control-group">
+              <button type="button" *ngIf="!newEntry" (click)="Edit()"class="btn btn-primary">Edit</button>
+              <button  type="submit" *ngIf="newEntry" (click)="Save()" class="btn btn-secondary">Save</button>
+              <!-- [disabled]="Image.value==''|| !UserForm.value"  -->
+              <button type="button" *ngIf="!newEntry" (click)="deleteData()" class="btn btn-success">Delete</button>
+              <button type="button" (click)="reset()" class="btn btn-danger">Cancel</button>
+            </div>
+          </fieldset>
+          <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Basic Information</legend>
+            <div class="row mb-3">
+           <input hidden type="text" class="form-control form-control-sm" name="id" [(ngModel)]="CustomerViewModels.Id" id="id"> 
+          </div>
+            <div class="row mb-3">
+              <label for="colFormLabel" class="col-sm-2 col-form-label">Name</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control form-control-sm" name="name" [(ngModel)]="CustomerViewModels.CustomerName" id="colFormLabelSm" placeholder="Enter Text Here">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="colFormLabel" class="col-sm-2 col-form-label">Father Name</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control form-control-sm" name="FatherNames" [(ngModel)]="CustomerViewModels.FatherName" id="colFormLabelSm" placeholder="Enter Text Here">
+              </div>
+            </div>
+            <div class="row">
+              <label for="colFormLabel" class="col-sm-2 col-form-label">Mother Name</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control form-control-sm" name="MotherNames" [(ngModel)]="CustomerViewModels.MotherName" id="colFormLabelSm" placeholder="Enter Text Here">
+              </div>
+            </div>
+            <div class="row">
+              <label for="colFormLabel" class="col-sm-2 col-form-label">Marital Status</label>
+              <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" [(ngModel)]="CustomerViewModels.MaritalStatus" name="MaritalStatuss"  id="inlineRadio1"
+                    value="1">
+                  <label class="form-check-label" for="inlineRadio1">Single</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" [(ngModel)]="CustomerViewModels.MaritalStatus" name="MaritalStatuss"  id="inlineRadio2"
+                    value="2">
+                  <label class="form-check-label" for="inlineRadio2">Married</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" [(ngModel)]="CustomerViewModels.MaritalStatus" name="MaritalStatuss"  id="inlineRadio3"
+                    value="3">
+                  <label class="form-check-label" for="inlineRadio2">Others</label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label for="colFormLabel" class="col-sm-2 col-form-label">Country</label>
+              <div class="col-sm-10">
+                <select class="form-select" name="Country" [(ngModel)]="CustomerViewModels.CountryId" aria-label="Default select example">
+                  <option value="" selected disabled>--Country Name--</option>
+                  <option *ngFor="let com of country" value="{{com.id}}" >{{com.countryName}}</option>
+                  <!-- <option value="2">Two</option>
+                  <option value="3">Pakistan</option> -->
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <label for="colFormLabel"  class="col-sm-2 col-form-label">Photo</label>
+              <div class="col-sm-8">
+                <app-fileupload (onUploadFinished)="onUploadFinished($event)"></app-fileupload>  
+              </div> 
+                <div *ngIf="hiddenimage" class="col-sm-2">
+                <img [src]="createImgPath(CustomerViewModels.Image)"  style="width: 75px;height: 60px;">       
+             </div>
+                
+            <!-- <input type="file" #Image accept="image/*" (change)="uploadFilenewton($event.target.files);fileChanged($event)"> -->
+         
+        
+  
+  
+            </div>
+          </fieldset>
+          <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Others Information</legend>
+            <div class="control-group">
+              <!-- <button type="button" class="btn btn-primary">Add</button>
+              <div class="row">
+                <div class="col-xs-12 form-group marl40">
+                  <table>
+                    <tr *ngFor="let aAdress of addres; let i = index">
+                      <td>{{i+1}}</td>
+                      <td><input type="text" [(ngModel)]="aAdress.adressInfo"/></td>
+                      <td><i class="bi bi-trash" (click)="deleteKeys(aAdress ,i)"></i></td>
+                    </tr>
+                  </table>
+             
+                  <input  type="number" name="count" [(ngModel)]="count"/> <button  class="ui red medium button my-1" (click)="addRow()">Add</button>
+                </div>
+              </div> -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">SL.No</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let aAdress of addres; let i = index">
+                    <td>{{i+1}}</td>
+                    <td scope="row">
+                      <input type="text" name="adressInfos{{i}}" [(ngModel)]="aAdress.customer_Address" class="form-control form-control-sm"
+                        id="colFormLabelSm" placeholder="Enter Text Here">
+                    </td>
+                    <td>
+                      <button class="ui red medium button my-1" (click)="deleteKeys(aAdress ,i)">
+                        <i class="bi bi-trash"></i>Delete
+                      </button>
+                    </td>
+                    <!-- <td>
+                      <button type="button" class="btn btn-secondary" style="padding: 0rem .0rem;">Edit</button>
+                      <button type="button" class="btn btn-danger" style="padding: 0rem .0rem;">Delete</button>
+                    </td> -->
+                  </tr>
+                  <!-- <tr>
+                    <th scope="row">
+                    </th>
+                    <td>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                    </th>
+                    <td>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                    </th>
+                    <td>
+                    </td>
+                  </tr> -->
+                </tbody>
+              </table>
+              <input type="number" name="count" [(ngModel)]="count" />
+              <button class="ui red medium button my-1" (click)="addRow()">Add</button>
+  
+            </div>
+          </fieldset>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>

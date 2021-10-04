@@ -1,0 +1,13 @@
+<form #UserForm="ngForm">
+    {{UserForm.value | json}}
+    <div class="col-sm-5 offset-sm-2 col-md-8 offset-md-0">
+        <div class="row mb-3">
+            <label for="colFormLabel" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-sm" name="name" [(ngModel)]="country.CountryName" id="colFormLabelSm" placeholder="Enter Text Here">
+            </div>
+          </div>
+          <button  type="submit" (click)="Save()" class="btn btn-secondary">Save</button>
+        </div>
+
+</form>
